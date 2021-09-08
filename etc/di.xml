@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Perspective\SalesOrders\Api\OrderRepositoryInterface"
+                type="Perspective\SalesOrders\Model\OrderRepository" />
+    <virtualType name="Perspective\SalesOrders\Model\Api\SearchCriteria\CollectionProcessor\JoinProcessor"
+                 type="Magento\Framework\Api\SearchCriteria\CollectionProcessor\JoinProcessor" >
+        <arguments>
+            <argument name="customJoins" xsi:type="array">
+                <item name="method" xsi:type="object">
+                    Perspective\SalesOrders\Model\SearchCriteria\CollectionProcessor\JoinProcessor\PaymentMethod
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Perspective\SalesOrder\Api\SearchCriteria\CollectionProcessor"
+                 type="Magento\Framework\Api\SearchCriteria\CollectionProcessor">
+        <arguments>
+            <argument name="processors" xsi:type="array">
+                <item name="join" xsi:type="object">
+                    Perspective\SalesOrders\Model\Api\SearchCriteria\CollectionProcessor\JoinProcessor
+                </item>
+                <item name="filters" xsi:type="object">
+                    Magento\Framework\Api\SearchCriteria\CollectionProcessor\FilterProcessor
+                </item>
+                <item name="pagination" xsi:type="object">
+                    Magento\Framework\Api\SearchCriteria\CollectionProcessor\PaginationProcessor
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Perspective\SalesOrders\Model\OrderRepository">
+        <arguments>
+            <argument name="collectionProcessor" xsi:type="object">
+                Perspective\SalesOrder\Api\SearchCriteria\CollectionProcessor
+            </argument>
+        </arguments>
+    </type>
+</config>
